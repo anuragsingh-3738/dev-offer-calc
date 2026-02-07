@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>HunyHuny Discount Offer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{font-family:Arial;margin:0;background:#f5f6fa}
+.container{max-width:1100px;margin:20px auto;padding:14px}
+.card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.field label{font-size:12px;font-weight:700;margin-bottom:4px;display:block}
+.field input,.field select{width:100%;padding:7px;border-radius:8px;border:1px solid #ddd}
+
+button{border:0;padding:9px 12px;border-radius:8px;font-weight:700;cursor:pointer}
+.btn-dark{background:#111827;color:#fff}
+.btn-secondary{background:#eef2ff;color:#1e40af}
+.btn-danger{background:#ffe4e6;color:#9f1239}
+
+table{width:100%;border-collapse:collapse;margin-top:12px}
+th,td{border-bottom:1px solid #eee;padding:8px;font-size:13px}
+th{background:#fafafa}
+
+.summary{margin-top:14px;border:1px dashed #ddd;padding:12px;border-radius:12px}
+.row{display:flex;justify-content:space-between;padding:5px 0}
+
+.final{
+  font-size:20px;font-weight:900;color:#fff;background:#111827;
+  padding:10px 14px;border-radius:12px
+}
+
+.header{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.logo{height:42px}
+
+#suggestions{
+  background:#fff;border:1px solid #ddd;border-radius:10px;
+  margin-top:4px;display:none;max-height:150px;overflow:auto
+}
+.suggItem{padding:7px;cursor:pointer}
+.suggItem:hover{background:#eee}
+</style>
+</head>
+
+<body>
+<div class="container">
+<div class="card">
+
+<div class="grid">
+  <div class="field">
+    <label>Sales Person</label>
+    <input id="salesPerson">
+  </div>
+
+  <div class="field">
+    <label>Customer</label>
+    <input id="customerName">
+  </div>
+
+  <div class="field">
+    <label>Mobile</label>
+    <input id="customerMobile">
+  </div>
+
+  <div class="field">
+    <label>Payment</label>
+    <select id="paymentMode">
+      <option value="UPI">UPI</option>
+      <option value="NET">Net Banking</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Search Model</label>
+    <input id="modelSearch">
+    <div id="suggestions"></div>
+  </div>
+</div>
+
+<br>
+
+<label><input type="checkbox" id="specialEnable"> Special Discount</label>
+<input id="specialName" placeholder="Offer name">
+<input id="specialAmt" type="number" placeholder="Amount" disabled>
+
+<br><br>
+
+<label><input type="checkbox" id="comboEnable"> Enable Combo 3%</label>
+
+<!-- ================= SCREENSHOT AREA ================= -->
+<div id="offerArea">
+
+  <!-- COMPANY -->
+  <div class="header">
+    <img src="logo.png" class="logo">
+    <div>
+      <h2 style="margin:0">HunyHuny Overseas Pvt. Ltd.</h2>
+      <div style="font-size:12px;color:#666;font-weight:700">Discount Offer</div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="row"><span>Offer ID</span><b id="offerId">Not Created</b></div>
+    <div class="row"><span>Valid Till</span><b id="validTill">-</b></div>
+    <div class="row"><span>Sales</span><b id="sSales"></b></div>
+    <div class="row"><span>Customer</span><b id="sCustomer"></b></div>
+    <div class="row"><span>Mobile</span><b id="sMobile"></b></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Model</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Total</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="cartBody"></tbody>
+  </table>
+
+  <div class="summary">
+    <div class="row"><span>Order Value</span><b id="orderValue">₹0</b></div>
+    <div class="row"><span>Website</span><b id="webDisc">₹0</b></div>
+    <div class="row"><span>UPI</span><b id="upiDisc">₹0</b></div>
+
+    <div class="row" id="comboRow" style="display:none">
+      <span>Combo</span><b id="comboDisc">₹0</b>
+    </div>
+
+    <div class="row" id="specialNameRow" style="display:none">
+      <span>Offer</span><b id="specialNameText"></b>
+    </div>
+
+    <div class="row" id="specialRow" style="display:none">
+      <span>Special</span><b id="specialDisc">₹0</b>
+    </div>
+
+    <div class="row"><span>Total Savings</span><b id="totalSavings">₹0</b></div>
+
+    <hr>
+
+    <div class="row">
+      <span>Final Payable</span>
+      <b class="final" id="finalPay">₹0</b>
+    </div>
+  </div>
+
+</div>
+<!-- ================= END SCREENSHOT AREA ================= -->
+
+<br>
+
+<button id="copyScreenshot" class="btn-dark">📸 Copy Screenshot</button>
+<button id="copySummary" class="btn-secondary">🧾 Copy Summary</button>
+<button id="clearCart" class="btn-secondary">🧹 Clear Cart</button>
+<button id="clearAll" class="btn-danger">🧨 Clear All</button>
+
+</div>
+</div>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
