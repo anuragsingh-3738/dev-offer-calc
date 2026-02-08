@@ -19,14 +19,14 @@ salesPerson.oninput = () =>
   localStorage.setItem("salesPerson", salesPerson.value);
 
 
-// ================= MOBILE =================
+// ================= MOBILE LIMIT =================
 customerMobile.oninput = () => {
   customerMobile.value =
     customerMobile.value.replace(/\D/g,'').slice(0,10);
 };
 
 
-// ================= LIVE UPDATE =================
+// ================= LIVE RECALC =================
 specialAmt.oninput = calculate;
 specialName.oninput = calculate;
 paymentMode.onchange = calculate;
@@ -137,10 +137,9 @@ function slab(t) {
 function calculate() {
 
   const original = cart.reduce((s,p)=>s+p.price*p.qty,0);
-
   let runningTotal = original;
 
-  // =============== COMBO FIRST ===============
+  // ===== COMBO FIRST (only if EXACTLY 2) =====
   let combo = 0;
   const comboItems = cart.filter(p => p.combo);
 
@@ -149,21 +148,20 @@ function calculate() {
       combo += p.price * p.qty * 0.03;
     });
     combo = Math.round(combo);
-
-    runningTotal -= combo;   // IMPORTANT
+    runningTotal -= combo;
   }
 
-  // =============== WEBSITE SLAB ===============
+  // ===== WEBSITE =====
   const s = slab(runningTotal);
-  runningTotal -= s.web;     // IMPORTANT
+  runningTotal -= s.web;
 
-  // =============== UPI ===============
+  // ===== UPI =====
   const upi = paymentMode.value === "UPI" ? s.upi : 0;
-  runningTotal -= upi;       // IMPORTANT
+  runningTotal -= upi;
 
-  // =============== SPECIAL ===============
+  // ===== SPECIAL =====
   const special = specialEnable.checked ? +specialAmt.value || 0 : 0;
-  runningTotal -= special;   // IMPORTANT
+  runningTotal -= special;
 
 
   const final = Math.max(0, runningTotal);
@@ -194,45 +192,13 @@ function calculate() {
     } else {
       specialLabel.innerText = "Special Discount";
     }
-  } else {
-    specialRow.style.display = "none";
-  }
-
-
-  // ===== UPI visibility =====
-  upiDisc.parentElement.style.display =
-    paymentMode.value === "UPI" ? "flex" : "none";
-
-
-  // ===== screenshot info =====
-  sSales.innerText = salesPerson.value;
-  sCustomer.innerText = customerName.value;
-  sMobile.innerText = customerMobile.value;
-}
-
-  // ===== combo row =====
-  comboRow.style.display = combo > 0 ? "flex" : "none";
-  comboDisc.innerText = "₹" + Math.round(combo);
-
-
-  // ===== special row =====
-  if (special > 0) {
-    specialRow.style.display = "flex";
-    specialDisc.innerText = "₹" + special;
-
-    if (specialName.value) {
-      specialLabel.innerText =
-        `Special Discount (${specialName.value})`;
-    } else {
-      specialLabel.innerText = "Special Discount";
-    }
 
   } else {
     specialRow.style.display = "none";
   }
 
 
-  // ===== UPI =====
+  // ===== UPI row =====
   upiDisc.parentElement.style.display =
     paymentMode.value === "UPI" ? "flex" : "none";
 
