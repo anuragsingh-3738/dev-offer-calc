@@ -1,6 +1,8 @@
 const SHEET_API =
 "https://script.google.com/macros/s/AKfycbw4mxhBfzXjFVB_dBm4_7vo2_iNuFXThaLuuP0s9TBerqgnFjfRJ3UcE6SYQzz36yI/exec";
 
+const upiQRBox = document.getElementById("upiQRBox");
+
 document.addEventListener("DOMContentLoaded", () => {
 
 let products = [];
@@ -142,6 +144,11 @@ function calculate() {
 
   const original = cart.reduce((s,p)=>s+p.price*p.qty,0);
   let runningTotal = original;
+
+  // ===== QR visibility =====
+upiQRBox.style.display =
+  paymentMode.value === "UPI" ? "block" : "none";
+
 
   // ===== COMBO FIRST =====
   let combo = 0;
