@@ -7,37 +7,49 @@ let products = [];
 let cart = [];
 
 
-// ===== autosave sales =====
+// ================= ELEMENTS =================
+const specialRow = document.getElementById("specialRow");
+const specialLabel = document.getElementById("specialLabel");
+const specialDisc = document.getElementById("specialDisc");
+
+
+// ================= AUTOSAVE =================
 salesPerson.value = localStorage.getItem("salesPerson") || "";
 salesPerson.oninput = () =>
   localStorage.setItem("salesPerson", salesPerson.value);
 
 
-// ===== mobile limit =====
+// ================= MOBILE =================
 customerMobile.oninput = () => {
   customerMobile.value =
     customerMobile.value.replace(/\D/g,'').slice(0,10);
 };
 
 
-// ===== special enable =====
+// ================= LIVE UPDATE =================
+specialAmt.oninput = calculate;
+specialName.oninput = calculate;
+paymentMode.onchange = calculate;
+
+
+// ================= SPECIAL TOGGLE =================
 specialEnable.onchange = () => {
   specialAmt.disabled = !specialEnable.checked;
   calculate();
 };
 
 
-// ===== combo enable =====
+// ================= COMBO TOGGLE =================
 comboEnable.onchange = () => render();
 
 
-// ===== fetch products =====
+// ================= FETCH =================
 fetch(SHEET_API)
   .then(r => r.json())
   .then(d => products = d);
 
 
-// ===== search =====
+// ================= SEARCH =================
 modelSearch.oninput = () => {
   const v = modelSearch.value.toLowerCase();
   suggestions.innerHTML = "";
@@ -69,7 +81,7 @@ modelSearch.oninput = () => {
 };
 
 
-// ===== render cart =====
+// ================= RENDER =================
 function render() {
   cartBody.innerHTML = "";
 
@@ -110,7 +122,7 @@ window.removeItem = (i) => { cart.splice(i,1); render(); };
 window.toggleCombo = (i,v) => { cart[i].combo = v; render(); };
 
 
-// ===== slab =====
+// ================= SLAB =================
 function slab(t) {
   if(t>=20000) return {web:1000,upi:500};
   if(t>=15000) return {web:700,upi:300};
@@ -121,12 +133,12 @@ function slab(t) {
 }
 
 
-// ===== calculate =====
+// ================= CALCULATE =================
 function calculate() {
 
   const original = cart.reduce((s,p)=>s+p.price*p.qty,0);
 
-  // ===== COMBO → ONLY WHEN EXACTLY 2 =====
+  // ===== combo only if EXACTLY 2 =====
   let combo = 0;
   const comboItems = cart.filter(p => p.combo);
 
@@ -151,21 +163,29 @@ function calculate() {
   finalPay.innerText = "₹" + Math.max(0, original - save).toFixed(0);
 
 
-  // ===== rows visibility =====
+  // ===== combo row =====
   comboRow.style.display = combo > 0 ? "flex" : "none";
   comboDisc.innerText = "₹" + Math.round(combo);
 
-  specialRow.style.display = special > 0 ? "flex" : "none";
-  specialDisc.innerText = "₹" + special;
 
-  if (specialEnable.checked && specialName.value && special > 0) {
-    specialNameRow.style.display = "flex";
-    specialNameText.innerText =
-      `Special Discount (${specialName.value})`;
+  // ===== special row =====
+  if (special > 0) {
+    specialRow.style.display = "flex";
+    specialDisc.innerText = "₹" + special;
+
+    if (specialName.value) {
+      specialLabel.innerText =
+        `Special Discount (${specialName.value})`;
+    } else {
+      specialLabel.innerText = "Special Discount";
+    }
+
   } else {
-    specialNameRow.style.display = "none";
+    specialRow.style.display = "none";
   }
 
+
+  // ===== UPI =====
   upiDisc.parentElement.style.display =
     paymentMode.value === "UPI" ? "flex" : "none";
 
@@ -177,13 +197,13 @@ function calculate() {
 }
 
 
-// ===== offer id =====
+// ================= OFFER ID =================
 function idGen(){
   return "HH-" + Date.now().toString().slice(-6);
 }
 
 
-// ===== screenshot → clipboard =====
+// ================= SCREENSHOT =================
 copyScreenshot.onclick = async () => {
 
   offerId.innerText = idGen();
@@ -209,7 +229,7 @@ copyScreenshot.onclick = async () => {
 };
 
 
-// ===== copy summary =====
+// ================= SUMMARY =================
 copySummary.onclick = () => {
 
   const txt = `📦 OFFER ${offerId.innerText}
@@ -232,7 +252,7 @@ copySummary.onclick = () => {
 };
 
 
-// ===== clear =====
+// ================= CLEAR =================
 clearCart.onclick = () => { cart = []; render(); };
 clearAll.onclick = () => location.reload();
 
