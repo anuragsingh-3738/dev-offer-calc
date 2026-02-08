@@ -6,40 +6,126 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{font-family:Arial;margin:0;background:#f5f6fa}
-.container{max-width:1100px;margin:20px auto;padding:14px}
-.card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+body{
+  font-family:Inter,Arial;
+  margin:0;
+  background:#f3f4f6;
+}
 
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.field label{font-size:12px;font-weight:700;margin-bottom:4px;display:block}
-.field input,.field select{width:100%;padding:7px;border-radius:8px;border:1px solid #ddd}
+.container{
+  max-width:1050px;
+  margin:20px auto;
+  padding:14px;
+}
 
-button{border:0;padding:9px 12px;border-radius:8px;font-weight:700;cursor:pointer}
+.card{
+  background:#fff;
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+
+.logo{height:44px}
+
+h2{margin:0}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+
+.field label{
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:4px;
+  display:block;
+  color:#555;
+}
+
+.field input,.field select{
+  width:100%;
+  padding:8px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  font-size:13px;
+}
+
+button{
+  border:0;
+  padding:9px 12px;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+}
+
 .btn-dark{background:#111827;color:#fff}
 .btn-secondary{background:#eef2ff;color:#1e40af}
-.btn-danger{background:#ffe4e6;color:#9f1239}
+.btn-danger{background:#fee2e2;color:#991b1b}
 
-table{width:100%;border-collapse:collapse;margin-top:12px}
-th,td{border-bottom:1px solid #eee;padding:8px;font-size:13px}
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:14px;
+}
+
+th,td{
+  border-bottom:1px solid #eee;
+  padding:8px;
+  font-size:13px;
+}
+
 th{background:#fafafa}
 
-.summary{margin-top:14px;border:1px dashed #ddd;padding:12px;border-radius:12px}
-.row{display:flex;justify-content:space-between;padding:5px 0}
+.summary{
+  margin-top:14px;
+  border:1px dashed #ddd;
+  padding:12px;
+  border-radius:12px;
+  background:#fcfcff;
+}
+
+.row{
+  display:flex;
+  justify-content:space-between;
+  padding:4px 0;
+}
 
 .final{
-  font-size:20px;font-weight:900;color:#fff;background:#111827;
-  padding:10px 14px;border-radius:12px
+  font-size:20px;
+  font-weight:900;
+  color:#fff;
+  background:#111827;
+  padding:10px 14px;
+  border-radius:12px;
 }
-
-.header{display:flex;gap:10px;align-items:center;margin-bottom:10px}
-.logo{height:42px}
 
 #suggestions{
-  background:#fff;border:1px solid #ddd;border-radius:10px;
-  margin-top:4px;display:none;max-height:150px;overflow:auto
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:10px;
+  margin-top:4px;
+  display:none;
+  max-height:150px;
+  overflow:auto;
 }
+
 .suggItem{padding:7px;cursor:pointer}
 .suggItem:hover{background:#eee}
+
+.btns{
+  margin-top:12px;
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
 </style>
 </head>
 
@@ -88,15 +174,14 @@ th{background:#fafafa}
 
 <label><input type="checkbox" id="comboEnable"> Enable Combo 3%</label>
 
-<!-- ================= SCREENSHOT AREA ================= -->
+<!-- ============= SCREENSHOT AREA ============= -->
 <div id="offerArea">
 
-  <!-- COMPANY -->
   <div class="header">
     <img src="logo.png" class="logo">
     <div>
-      <h2 style="margin:0">HunyHuny Overseas Pvt. Ltd.</h2>
-      <div style="font-size:12px;color:#666;font-weight:700">Discount Offer</div>
+      <h2>HunyHuny Overseas Pvt. Ltd.</h2>
+      <div style="font-size:12px;color:#666">Discount Offer</div>
     </div>
   </div>
 
@@ -131,13 +216,8 @@ th{background:#fafafa}
     </div>
 
     <div class="row" id="specialRow" style="display:none">
-  <span id="specialLabel">Special Discount</span>
-  <b id="specialDisc">₹0</b>
-</div>
-
-
-    <div class="row" id="specialRow" style="display:none">
-      <span>Special</span><b id="specialDisc">₹0</b>
+      <span id="specialLabel">Special Discount</span>
+      <b id="specialDisc">₹0</b>
     </div>
 
     <div class="row"><span>Total Savings</span><b id="totalSavings">₹0</b></div>
@@ -151,14 +231,14 @@ th{background:#fafafa}
   </div>
 
 </div>
-<!-- ================= END SCREENSHOT AREA ================= -->
+<!-- ============= END SCREENSHOT AREA ============= -->
 
-<br>
-
-<button id="copyScreenshot" class="btn-dark">📸 Copy Screenshot</button>
-<button id="copySummary" class="btn-secondary">🧾 Copy Summary</button>
-<button id="clearCart" class="btn-secondary">🧹 Clear Cart</button>
-<button id="clearAll" class="btn-danger">🧨 Clear All</button>
+<div class="btns">
+  <button id="copyScreenshot" class="btn-dark">📸 Copy Screenshot</button>
+  <button id="copySummary" class="btn-secondary">🧾 Copy Summary</button>
+  <button id="clearCart" class="btn-secondary">🧹 Clear Cart</button>
+  <button id="clearAll" class="btn-danger">🧨 Clear All</button>
+</div>
 
 </div>
 </div>
