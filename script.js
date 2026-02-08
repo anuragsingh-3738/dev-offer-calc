@@ -152,6 +152,10 @@ function calculate() {
 upiQRBox.style.display =
   paymentMode.value === "UPI" ? "block" : "none";
 
+  upiQRSection.style.display =
+  paymentMode.value === "UPI" ? "block" : "none";
+
+
 
   // ===== COMBO FIRST =====
   let combo = 0;
@@ -239,6 +243,17 @@ function idGen(){
 
 // ================= SCREENSHOT =================
 copyScreenshot.onclick = async () => {
+copyQRBtn.onclick = async () => {
+
+  const response = await fetch(upiQRImage.src);
+  const blob = await response.blob();
+
+  await navigator.clipboard.write([
+    new ClipboardItem({ "image/png": blob })
+  ]);
+
+  alert("✅ QR copied");
+};
 
   offerId.innerText = idGen();
 
