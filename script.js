@@ -12,6 +12,10 @@ const specialRow = document.getElementById("specialRow");
 const specialLabel = document.getElementById("specialLabel");
 const specialDisc = document.getElementById("specialDisc");
 
+const comboRow = document.getElementById("comboRow");
+const comboLabel = document.getElementById("comboLabel");
+const comboDisc = document.getElementById("comboDisc");
+
 
 // ================= AUTOSAVE =================
 salesPerson.value = localStorage.getItem("salesPerson") || "";
@@ -139,7 +143,7 @@ function calculate() {
   const original = cart.reduce((s,p)=>s+p.price*p.qty,0);
   let runningTotal = original;
 
-  // ===== COMBO FIRST (only if EXACTLY 2) =====
+  // ===== COMBO FIRST =====
   let combo = 0;
   const comboItems = cart.filter(p => p.combo);
 
@@ -163,7 +167,6 @@ function calculate() {
   const special = specialEnable.checked ? +specialAmt.value || 0 : 0;
   runningTotal -= special;
 
-
   const final = Math.max(0, runningTotal);
   const save = original - final;
 
@@ -176,12 +179,20 @@ function calculate() {
   finalPay.innerText = "₹" + final.toFixed(0);
 
 
-  // ===== combo row =====
-  comboRow.style.display = combo > 0 ? "flex" : "none";
-  comboDisc.innerText = "₹" + combo;
+  // ===== COMBO ROW WITH NAMES =====
+  if (combo > 0) {
+    comboRow.style.display = "flex";
+    comboDisc.innerText = "₹" + combo;
+
+    const names = comboItems.map(p => p.model).join(", ");
+    comboLabel.innerText = `Combo Discount (${names})`;
+
+  } else {
+    comboRow.style.display = "none";
+  }
 
 
-  // ===== special row =====
+  // ===== SPECIAL ROW =====
   if (special > 0) {
     specialRow.style.display = "flex";
     specialDisc.innerText = "₹" + special;
@@ -198,7 +209,7 @@ function calculate() {
   }
 
 
-  // ===== UPI row =====
+  // ===== UPI =====
   upiDisc.parentElement.style.display =
     paymentMode.value === "UPI" ? "flex" : "none";
 
@@ -255,7 +266,7 @@ copySummary.onclick = () => {
 💰 Order: ${orderValue.innerText}
 🌐 Website: ${webDisc.innerText}
 🏦 UPI: ${upiDisc.innerText}
-🎁 Combo: ${comboDisc.innerText}
+🎁 ${comboLabel.innerText}: ${comboDisc.innerText}
 ⭐ Special Discount (${specialName.value || "Manual"}): ${specialDisc.innerText}
 
 🧾 Pay: ${finalPay.innerText}`;
