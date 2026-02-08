@@ -2,6 +2,9 @@ const SHEET_API =
 "https://script.google.com/macros/s/AKfycbw4mxhBfzXjFVB_dBm4_7vo2_iNuFXThaLuuP0s9TBerqgnFjfRJ3UcE6SYQzz36yI/exec";
 
 const upiQRBox = document.getElementById("upiQRBox");
+const upiQRSection = document.getElementById("upiQRSection");
+const copyQRBtn = document.getElementById("copyQRBtn");
+const upiQRImage = document.getElementById("upiQRImage");
 
 document.addEventListener("DOMContentLoaded", () => {
 
