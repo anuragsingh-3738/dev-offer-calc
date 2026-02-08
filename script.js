@@ -138,7 +138,9 @@ function calculate() {
 
   const original = cart.reduce((s,p)=>s+p.price*p.qty,0);
 
-  // ===== combo only if EXACTLY 2 =====
+  let runningTotal = original;
+
+  // =============== COMBO FIRST ===============
   let combo = 0;
   const comboItems = cart.filter(p => p.combo);
 
@@ -146,22 +148,67 @@ function calculate() {
     comboItems.forEach(p => {
       combo += p.price * p.qty * 0.03;
     });
+    combo = Math.round(combo);
+
+    runningTotal -= combo;   // IMPORTANT
   }
 
-  const afterCombo = original - combo;
+  // =============== WEBSITE SLAB ===============
+  const s = slab(runningTotal);
+  runningTotal -= s.web;     // IMPORTANT
 
-  const s = slab(afterCombo);
+  // =============== UPI ===============
   const upi = paymentMode.value === "UPI" ? s.upi : 0;
+  runningTotal -= upi;       // IMPORTANT
+
+  // =============== SPECIAL ===============
   const special = specialEnable.checked ? +specialAmt.value || 0 : 0;
+  runningTotal -= special;   // IMPORTANT
 
-  const save = combo + s.web + upi + special;
 
+  const final = Math.max(0, runningTotal);
+  const save = original - final;
+
+
+  // ===== display =====
   orderValue.innerText = "₹" + original.toFixed(0);
   webDisc.innerText = "₹" + s.web;
   upiDisc.innerText = "₹" + upi;
   totalSavings.innerText = "₹" + save.toFixed(0);
-  finalPay.innerText = "₹" + Math.max(0, original - save).toFixed(0);
+  finalPay.innerText = "₹" + final.toFixed(0);
 
+
+  // ===== combo row =====
+  comboRow.style.display = combo > 0 ? "flex" : "none";
+  comboDisc.innerText = "₹" + combo;
+
+
+  // ===== special row =====
+  if (special > 0) {
+    specialRow.style.display = "flex";
+    specialDisc.innerText = "₹" + special;
+
+    if (specialName.value) {
+      specialLabel.innerText =
+        `Special Discount (${specialName.value})`;
+    } else {
+      specialLabel.innerText = "Special Discount";
+    }
+  } else {
+    specialRow.style.display = "none";
+  }
+
+
+  // ===== UPI visibility =====
+  upiDisc.parentElement.style.display =
+    paymentMode.value === "UPI" ? "flex" : "none";
+
+
+  // ===== screenshot info =====
+  sSales.innerText = salesPerson.value;
+  sCustomer.innerText = customerName.value;
+  sMobile.innerText = customerMobile.value;
+}
 
   // ===== combo row =====
   comboRow.style.display = combo > 0 ? "flex" : "none";
