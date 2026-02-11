@@ -242,7 +242,7 @@ copyScreenshot.onclick = async () => {
 
   offerId.innerText = idGen();
 
-  const d = new Date(Date.now() + 501);
+  const d = new Date(Date.now() + 86400000);
   const date =
     ("0"+d.getDate()).slice(-2) + "/" +
     ("0"+(d.getMonth()+1)).slice(-2) + "/" +
@@ -256,6 +256,7 @@ copyScreenshot.onclick = async () => {
   html2canvas(offerArea).then(async canvas => {
     const blob = await new Promise(r => canvas.toBlob(r));
     await navigator.clipboard.write([
+      new ClipboardItem({ "image/png": blob })
     ]);
     alert("✅ Copied to clipboard");
   });
